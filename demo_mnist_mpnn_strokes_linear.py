@@ -155,12 +155,9 @@ class MNIST(data.Dataset):
     def __init__(self, root, number_clusters=20, is_train = True, type='kp'):
         if is_train:
             info = 'skeleton_train.mat'
-            cluster = 'r_ic_train.npy'
         else:
             info = 'skeleton_test.mat'
-            cluster = 'r_ic.npy'
         info = os.path.join(root, info)
-        cluster = os.path.join(root, cluster)
         # scaler = StandardScaler()
         info = scipy.io.loadmat(info)
         G = info['G']
@@ -392,12 +389,12 @@ class LinearModel(nn.Module):
 # Argument parser
 parser = argparse.ArgumentParser(description='Neural message passing')
 
-parser.add_argument('--logPath', default='/home/scheng53/Robust_Active_Learning/skeleton/GNN/model/distance_linear_5_better', help='log path')
+parser.add_argument('--logPath', default='model/distance_linear_5_better', help='log path')
 parser.add_argument('--plotLr', default=False, help='allow plotting the data')
-parser.add_argument('--plotPath', default='/home/scheng53/Robust_Active_Learning/skeleton/GNN/model/distance_linear_5_better', help='plot path')
+parser.add_argument('--plotPath', default='model/distance_linear_5_better', help='plot path')
 parser.add_argument('--resume', default=None,
                     help='path to latest checkpoint')
-parser.add_argument('--savepath', default='/home/scheng53/Robust_Active_Learning/skeleton/GNN/model/distance_linear_5_better',
+parser.add_argument('--savepath', default='model/distance_linear_5_better',
                     help='path to save checkpoint')
 # Optimization Options
 parser.add_argument('--batch-size', type=int, default=128, metavar='N',
@@ -446,8 +443,8 @@ def main():
     #
     # class_list = list(set(train_classes + test_classes))
     # num_classes = len(class_list)
-    data_train = MNIST(root='/home/scheng53/Robust_Active_Learning/skeleton/', is_train=True, type='stroke')
-    data_test = MNIST(root='/home/scheng53/Robust_Active_Learning/skeleton/', is_train=False, type='stroke')
+    data_train = MNIST(root='./', is_train=True, type='stroke')
+    data_test = MNIST(root='./', is_train=False, type='stroke')
     
     # Define model and optimizer
     print('Define model')
@@ -477,7 +474,7 @@ def main():
 
 
     print('Optimizer')
-    # optimizer = optim.Adam(model.parameters(), lr=args.lr)
+
 
     criterion = nn.NLLLoss()
 
@@ -485,7 +482,7 @@ def main():
 
     print('Logger')
     logger = Logger(args.logPath)
-    # writer = SummaryWriter(args.logPath)
+
 
     if args.plotLr:
         print('Plotter')
